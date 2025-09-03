@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medieval Message Scroll</title>
+    <title>Medieval Webhook</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Uncial+Antiqua&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&display=swap');
         
         * {
             margin: 0;
@@ -18,362 +18,261 @@
             color: #d4af37;
             font-family: 'Cinzel', serif;
             min-height: 100vh;
-            background-image: 
-                radial-gradient(circle at 25% 25%, #2a2a2a 0%, transparent 50%),
-                radial-gradient(circle at 75% 75%, #2a2a2a 0%, transparent 50%);
             padding: 20px;
         }
 
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 40px;
-            padding: 30px 0;
-            border-bottom: 2px solid #444;
+            margin-bottom: 30px;
         }
 
         .title {
-            font-family: 'Uncial Antiqua', cursive;
-            font-size: 2.5em;
+            font-size: 2.8em;
             color: #d4af37;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
         }
 
-        .instructions {
-            background: linear-gradient(135deg, #2a2a2a, #333);
-            border: 2px solid #555;
+        .webhook-url {
+            background: #2a2a2a;
+            border: 2px solid #444;
             border-radius: 8px;
-            padding: 25px;
-            margin-bottom: 40px;
-            box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
         }
 
-        .instructions h3 {
-            color: #d4af37;
-            margin-bottom: 15px;
-            font-size: 1.3em;
-            border-bottom: 1px solid #555;
-            padding-bottom: 8px;
-        }
-
-        .endpoint {
+        .url-display {
             background: #000;
             color: #00ff41;
-            padding: 12px;
-            border-radius: 4px;
-            font-family: monospace;
-            font-size: 0.85em;
-            margin: 10px 0;
-            border: 1px solid #333;
-            word-break: break-all;
-        }
-
-        .example-json {
-            background: #1a1a1a;
-            color: #ccc;
             padding: 15px;
             border-radius: 4px;
             font-family: monospace;
-            font-size: 0.8em;
-            margin: 10px 0;
-            border: 1px solid #444;
-            white-space: pre;
-            overflow-x: auto;
-        }
-
-        .scroll-section {
-            background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
-            border: 3px solid #444;
-            border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 40px;
-            box-shadow: 
-                0 0 20px rgba(212, 175, 55, 0.1),
-                inset 0 0 20px rgba(0,0,0,0.5);
-            position: relative;
-        }
-
-        .scroll-section::before {
-            content: "⚔️ CURRENT MESSAGE ⚔️";
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #1a1a1a;
-            color: #d4af37;
-            padding: 0 20px;
-            font-size: 0.9em;
-            font-weight: 600;
-        }
-
-        .current-message {
-            min-height: 120px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            font-size: 1.4em;
-            line-height: 1.6;
-        }
-
-        .message-author {
-            color: #ff6b6b;
-            font-weight: 600;
-            font-size: 1.2em;
-            margin-bottom: 15px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
-        }
-
-        .message-text {
-            color: #e8e8e8;
-            font-style: italic;
-            margin-bottom: 15px;
-        }
-
-        .message-time {
-            color: #888;
-            font-size: 0.7em;
-            margin-top: 10px;
-        }
-
-        .placeholder {
-            color: #666;
-            font-style: italic;
             font-size: 1.1em;
+            margin: 10px 0;
+            word-break: break-all;
+            border: 1px solid #333;
         }
 
-        .history-section {
-            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
-            border: 2px solid #333;
+        .messages-container {
+            background: #2a2a2a;
+            border: 2px solid #444;
             border-radius: 8px;
             padding: 25px;
-            box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
+            min-height: 400px;
         }
 
-        .history-header {
+        .messages-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             padding-bottom: 15px;
-            border-bottom: 2px solid #333;
+            border-bottom: 2px solid #444;
         }
 
-        .history-title {
+        .clear-btn {
+            background: #666;
             color: #d4af37;
-            font-size: 1.5em;
-            font-weight: 600;
-        }
-
-        .refresh-btn {
-            background: linear-gradient(135deg, #444, #666);
-            color: #d4af37;
-            border: 1px solid #555;
+            border: 1px solid #777;
             padding: 8px 16px;
             border-radius: 4px;
             cursor: pointer;
             font-family: 'Cinzel', serif;
-            font-size: 0.9em;
-            transition: all 0.3s ease;
         }
 
-        .refresh-btn:hover {
-            background: linear-gradient(135deg, #555, #777);
-            box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
+        .clear-btn:hover {
+            background: #777;
         }
 
-        .history-item {
-            background: linear-gradient(135deg, #2a2a2a, #333);
+        .message {
+            background: #1a1a1a;
             border: 1px solid #444;
+            border-left: 4px solid #d4af37;
             border-radius: 6px;
             padding: 20px;
             margin: 15px 0;
-            border-left: 4px solid #666;
-            transition: all 0.3s ease;
+            position: relative;
         }
 
-        .history-item:hover {
-            border-left-color: #d4af37;
-            box-shadow: 0 2px 10px rgba(212, 175, 55, 0.2);
-        }
-
-        .history-author {
-            color: #ff8c42;
+        .message-header {
+            color: #ff6b6b;
             font-weight: 600;
-            font-size: 1em;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            font-size: 1.1em;
         }
 
-        .history-text {
+        .message-body {
             color: #ccc;
-            font-size: 0.95em;
-            line-height: 1.4;
-            margin-bottom: 8px;
+            background: #111;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9em;
+            white-space: pre-wrap;
+            border: 1px solid #333;
+            max-height: 300px;
+            overflow-y: auto;
         }
 
-        .history-time {
+        .message-time {
+            position: absolute;
+            top: 10px;
+            right: 15px;
             color: #666;
-            font-size: 0.75em;
-        }
-
-        .loading {
-            text-align: center;
-            color: #666;
-            padding: 40px;
-            font-style: italic;
+            font-size: 0.8em;
         }
 
         .no-messages {
             text-align: center;
             color: #666;
-            padding: 40px;
             font-style: italic;
+            padding: 50px;
         }
 
-        /* Scrollbar styling */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #1a1a1a;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #444;
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #555;
+        .instruction {
+            background: #333;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+            color: #ccc;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1 class="title">⚔️ Medieval Message Scroll ⚔️</h1>
+            <h1 class="title">⚔️ Medieval Webhook ⚔️</h1>
+            <p>Send POST requests to receive and display messages</p>
         </div>
 
-        <div class="instructions">
-            <h3>🏰 How to Send Your Message via n8n</h3>
-            <p>Use an <strong>HTTP Request Node</strong> in your n8n workflow with these settings:</p>
-            
-            <p><strong>URL:</strong></p>
-            <div class="endpoint">https://tag-oath-board-default-rtdb.asia-southeast1.firebasedatabase.app/messages.json</div>
-            
-            <p><strong>Method:</strong> POST</p>
-            <p><strong>Body (JSON):</strong></p>
-            <div class="example-json">{
-  "name": "Your Name",
-  "message": "Your message here",
-  "timestamp": "{{ $now }}"
-}</div>
-            
-            <p style="margin-top: 15px;">Your message will appear on this scroll for all to see! 📜</p>
-        </div>
-
-        <div class="scroll-section">
-            <div class="current-message" id="currentMessage">
-                <div class="placeholder">🏰 Awaiting the next message from the realm... 🏰</div>
+        <div class="webhook-url">
+            <h3>Your Webhook URL:</h3>
+            <div class="url-display" id="webhookUrl">Loading...</div>
+            <div class="instruction">
+                Send POST requests with JSON body: <code>{"name": "Your Name", "message": "Your Message"}</code>
             </div>
         </div>
 
-        <div class="history-section">
-            <div class="history-header">
-                <h2 class="history-title">📜 Recent Messages from the Realm</h2>
-                <button class="refresh-btn" onclick="loadMessages()">⟲ Refresh</button>
+        <div class="messages-container">
+            <div class="messages-header">
+                <h2>📜 Received Messages</h2>
+                <button class="clear-btn" onclick="clearMessages()">Clear All</button>
             </div>
-            <div id="historyContainer">
-                <div class="loading">Loading ancient messages...</div>
+            <div id="messagesDisplay">
+                <div class="no-messages">🏰 No messages received yet. Send your first POST request! 🏰</div>
             </div>
         </div>
     </div>
 
     <script>
-        const FIREBASE_URL = 'https://n8n-messages-default-rtdb.firebaseio.com/messages.json';
-        let latestMessageId = null;
-
-        async function loadMessages() {
-            try {
-                const response = await fetch(FIREBASE_URL);
-                const data = await response.json();
-                
-                const historyContainer = document.getElementById('historyContainer');
-                const currentMessageDiv = document.getElementById('currentMessage');
-                
-                if (!data) {
-                    historyContainer.innerHTML = '<div class="no-messages">🏰 The scroll is empty. Be the first to send a message! 🏰</div>';
-                    return;
+        let messages = [];
+        const webhookId = Math.random().toString(36).substring(2, 8);
+        const webhookUrl = `https://webhook.site/${webhookId}`;
+        
+        // Display the webhook URL
+        document.getElementById('webhookUrl').textContent = webhookUrl;
+        
+        // Create a WebSocket connection to listen for incoming webhooks
+        function connectToWebhook() {
+            const ws = new WebSocket(`wss://webhook.site/ws/${webhookId}`);
+            
+            ws.onopen = function() {
+                console.log('Connected to webhook');
+                updateMessagesDisplay();
+            };
+            
+            ws.onmessage = function(event) {
+                const data = JSON.parse(event.data);
+                if (data.type === 'request') {
+                    addMessage(data);
                 }
-                
-                // Convert to array and sort by timestamp (newest first)
-                const messages = Object.entries(data).map(([key, value]) => ({
-                    id: key,
-                    ...value
-                })).sort((a, b) => new Date(b.timestamp || 0) - new Date(a.timestamp || 0));
-                
-                if (messages.length > 0) {
-                    const latest = messages[0];
-                    
-                    // Update current message if it's new
-                    if (latestMessageId !== latest.id) {
-                        currentMessageDiv.innerHTML = `
-                            <div class="message-author">⚔️ ${escapeHtml(latest.name || 'Anonymous Knight')} ⚔️</div>
-                            <div class="message-text">"${escapeHtml(latest.message || 'No message')}"</div>
-                            <div class="message-time">${formatTimestamp(latest.timestamp)}</div>
-                        `;
-                        latestMessageId = latest.id;
-                    }
-                    
-                    // Show history (excluding the current message)
-                    const historyMessages = messages.slice(1);
-                    
-                    if (historyMessages.length > 0) {
-                        historyContainer.innerHTML = historyMessages.map(msg => `
-                            <div class="history-item">
-                                <div class="history-author">⚔️ ${escapeHtml(msg.name || 'Anonymous Knight')}</div>
-                                <div class="history-text">"${escapeHtml(msg.message || 'No message')}"</div>
-                                <div class="history-time">${formatTimestamp(msg.timestamp)}</div>
-                            </div>
-                        `).join('');
-                    } else {
-                        historyContainer.innerHTML = '<div class="no-messages">🏰 Only one message in the realm so far... 🏰</div>';
-                    }
-                } else {
-                    historyContainer.innerHTML = '<div class="no-messages">🏰 The scroll awaits your first message! 🏰</div>';
-                }
-                
-            } catch (error) {
-                console.error('Error loading messages:', error);
-                document.getElementById('historyContainer').innerHTML = 
-                    '<div class="no-messages">⚠️ The ancient scroll is temporarily unavailable ⚠️</div>';
-            }
+            };
+            
+            ws.onclose = function() {
+                console.log('Webhook connection closed, reconnecting...');
+                setTimeout(connectToWebhook, 1000);
+            };
+            
+            ws.onerror = function(error) {
+                console.error('Webhook error:', error);
+            };
         }
-
+        
+        function addMessage(data) {
+            const message = {
+                id: Date.now(),
+                timestamp: new Date().toISOString(),
+                method: data.method,
+                headers: data.headers,
+                body: data.content,
+                query: data.query
+            };
+            
+            messages.unshift(message);
+            
+            // Keep only last 50 messages
+            if (messages.length > 50) {
+                messages = messages.slice(0, 50);
+            }
+            
+            updateMessagesDisplay();
+        }
+        
+        function updateMessagesDisplay() {
+            const display = document.getElementById('messagesDisplay');
+            
+            if (messages.length === 0) {
+                display.innerHTML = '<div class="no-messages">🏰 No messages received yet. Send your first POST request! 🏰</div>';
+                return;
+            }
+            
+            display.innerHTML = messages.map(msg => {
+                let bodyContent = '';
+                
+                try {
+                    if (msg.body) {
+                        const parsed = JSON.parse(msg.body);
+                        if (parsed.name && parsed.message) {
+                            bodyContent = `⚔️ ${parsed.name}: "${parsed.message}"`;
+                        } else {
+                            bodyContent = JSON.stringify(parsed, null, 2);
+                        }
+                    } else {
+                        bodyContent = 'Empty body';
+                    }
+                } catch (e) {
+                    bodyContent = msg.body || 'Empty body';
+                }
+                
+                return `
+                    <div class="message">
+                        <div class="message-time">${new Date(msg.timestamp).toLocaleString()}</div>
+                        <div class="message-header">${msg.method} Request</div>
+                        <div class="message-body">${escapeHtml(bodyContent)}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function clearMessages() {
+            messages = [];
+            updateMessagesDisplay();
+        }
+        
         function escapeHtml(text) {
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
         }
-
-        function formatTimestamp(timestamp) {
-            if (!timestamp) return 'Time unknown';
-            const date = new Date(timestamp);
-            return date.toLocaleString();
-        }
-
-        // Auto-refresh every 15 seconds
-        setInterval(loadMessages, 15000);
-
-        // Load messages on page load
-        loadMessages();
+        
+        // Connect to webhook on page load
+        connectToWebhook();
     </script>
 </body>
 </html>
