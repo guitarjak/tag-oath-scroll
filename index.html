@@ -417,10 +417,35 @@
         function formatTimestamp(timestamp) {
             if (!timestamp) return 'Unknown time';
             try {
-                const date = new Date(timestamp);
-                if (isNaN(date.getTime())) return 'Unknown time';
-                return date.toLocaleString();
+                // Handle different timestamp formats
+                let date;
+                if (typeof timestamp === 'string') {
+                    // Handle ISO string format from n8n
+                    date = new Date(timestamp);
+                } else if (typeof timestamp === 'number') {
+                    // Handle Unix timestamp
+                    date = new Date(timestamp);
+                } else {
+                    return 'Unknown time';
+                }
+                
+                // Check if date is valid
+                if (isNaN(date.getTime())) {
+                    console.log('Invalid date:', timestamp);
+                    return 'Unknown time';
+                }
+                
+                // Format date nicely
+                return date.toLocaleString('th-TH', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
             } catch (error) {
+                console.error('Error formatting timestamp:', error, 'Value:', timestamp);
                 return 'Unknown time';
             }
         }
