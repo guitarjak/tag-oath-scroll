@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medieval Webhook</title>
+    <title>TAG First Mission</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&display=swap');
         
@@ -54,8 +54,55 @@
             font-family: monospace;
             font-size: 1.1em;
             margin: 10px 0;
-            word-break: break-all;
             border: 1px solid #333;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .url-text {
+            flex: 1;
+            word-break: break-all;
+        }
+
+        .json-display {
+            background: #1a1a1a;
+            color: #ccc;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9em;
+            margin: 10px 0;
+            border: 1px solid #444;
+            white-space: pre-wrap;
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+        }
+
+        .json-text {
+            flex: 1;
+        }
+
+        .copy-btn {
+            background: #d4af37;
+            color: #1a1a1a;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Cinzel', serif;
+            font-weight: 600;
+            margin-left: 10px;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: #b8941f;
+            transform: translateY(-1px);
         }
 
         .option {
@@ -76,184 +123,246 @@
             margin: 5px 0;
         }
 
-        .test-section {
-            background: #2a2a2a;
-            border: 2px solid #444;
-            border-radius: 8px;
-            padding: 25px;
-            margin-bottom: 30px;
-        }
-
-        .test-form {
-            display: flex;
-            gap: 10px;
-            margin: 15px 0;
-            flex-wrap: wrap;
-        }
-
-        .test-input {
-            flex: 1;
-            min-width: 150px;
-            padding: 10px;
-            background: #1a1a1a;
-            border: 1px solid #444;
-            border-radius: 4px;
-            color: #d4af37;
-            font-family: 'Cinzel', serif;
-        }
-
-        .test-btn {
-            background: #d4af37;
-            color: #1a1a1a;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-family: 'Cinzel', serif;
-            font-weight: 600;
-        }
-
-        .test-btn:hover {
-            background: #b8941f;
-        }
-
         .messages-container {
-            background: #2a2a2a;
-            border: 2px solid #444;
-            border-radius: 8px;
-            padding: 25px;
-            min-height: 300px;
+            background: linear-gradient(135deg, #2a1f1a, #3d2f2a);
+            border: 3px solid #8b4513;
+            border-radius: 15px;
+            padding: 30px;
+            min-height: 400px;
+            box-shadow: 
+                inset 0 0 30px rgba(139, 69, 19, 0.2),
+                0 0 20px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .messages-container::before {
+            content: "";
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            background: linear-gradient(45deg, #8b4513, #a0522d, #8b4513, #654321);
+            border-radius: 20px;
+            z-index: -1;
         }
 
         .messages-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #444;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #8b4513;
+            position: relative;
+        }
+
+        .messages-header::after {
+            content: "⚔️ ⚔️ ⚔️";
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2a1f1a;
+            padding: 0 15px;
+            color: #d4af37;
+        }
+
+        .messages-header h2 {
+            font-size: 1.8em;
+            color: #d4af37;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
         }
 
         .clear-btn {
-            background: #666;
-            color: #d4af37;
-            border: 1px solid #777;
-            padding: 8px 16px;
-            border-radius: 4px;
+            background: linear-gradient(135deg, #8b4513, #a0522d);
+            color: #fff8dc;
+            border: 2px solid #654321;
+            padding: 10px 18px;
+            border-radius: 6px;
             cursor: pointer;
             font-family: 'Cinzel', serif;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
 
         .clear-btn:hover {
-            background: #777;
+            background: linear-gradient(135deg, #a0522d, #cd853f);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
         }
 
         .message {
-            background: #1a1a1a;
-            border: 1px solid #444;
-            border-left: 4px solid #d4af37;
-            border-radius: 6px;
-            padding: 20px;
-            margin: 15px 0;
+            background: linear-gradient(135deg, #3a2a1a, #4a3a2a);
+            border: 2px solid #8b4513;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
             position: relative;
+            box-shadow: 
+                0 4px 15px rgba(0,0,0,0.4),
+                inset 0 1px 3px rgba(212, 175, 55, 0.1);
+            transform: perspective(1000px) rotateX(2deg);
+            transition: all 0.3s ease;
+        }
+
+        .message:hover {
+            transform: perspective(1000px) rotateX(0deg) translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+        }
+
+        .message::before {
+            content: "📜";
+            position: absolute;
+            top: -8px;
+            left: 20px;
+            font-size: 1.5em;
+            background: #2a1f1a;
+            padding: 0 5px;
         }
 
         .message-header {
             color: #ff6b6b;
             font-weight: 600;
-            margin-bottom: 10px;
-            font-size: 1.1em;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+            border-bottom: 1px solid #654321;
+            padding-bottom: 8px;
         }
 
         .message-body {
-            color: #ccc;
-            font-size: 1.1em;
-            line-height: 1.5;
+            color: #f5deb3;
+            font-size: 1.2em;
+            line-height: 1.6;
+            font-style: italic;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #d4af37;
         }
 
         .message-time {
             position: absolute;
-            top: 10px;
-            right: 15px;
-            color: #666;
-            font-size: 0.8em;
+            top: 15px;
+            right: 20px;
+            color: #8b7355;
+            font-size: 0.85em;
+            background: rgba(0,0,0,0.3);
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid #654321;
         }
 
         .no-messages {
             text-align: center;
-            color: #666;
+            color: #8b7355;
             font-style: italic;
-            padding: 50px;
+            padding: 60px 20px;
+            font-size: 1.3em;
+            background: rgba(139, 69, 19, 0.1);
+            border: 2px dashed #8b4513;
+            border-radius: 10px;
         }
 
-        .status {
-            padding: 10px;
-            border-radius: 4px;
-            margin: 10px 0;
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #28a745;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-family: 'Cinzel', serif;
+            font-weight: 600;
+            z-index: 1000;
+            transform: translateY(-100px);
+            opacity: 0;
+            transition: all 0.3s ease;
         }
 
-        .status.success {
-            background: #1a4a3a;
-            color: #4ade80;
-            border: 1px solid #22c55e;
-        }
-
-        .status.error {
-            background: #4a1a1a;
-            color: #ef4444;
-            border: 1px solid #dc2626;
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1 class="title">⚔️ Medieval Message Board ⚔️</h1>
-            <p>Send messages via webhook and see them displayed here</p>
+            <h1 class="title">⚔️ TAG First Mission ⚔️</h1>
+            <p>Royal proclamations from n8n automation workflows</p>
         </div>
 
         <div class="webhook-url">
-            <h3>🏰 How to Send Messages:</h3>
+            <h3>🏰 n8n Webhook Instructions:</h3>
             
             <div class="option">
-                <h4>Option 1: Direct to Firebase (Recommended)</h4>
+                <h4>Firebase Webhook Endpoint</h4>
                 <p><strong>URL:</strong></p>
-                <div class="url-display">https://tag-oath-board-default-rtdb.asia-southeast1.firebasedatabase.app/messages.json</div>
+                <div class="url-display">
+                    <span class="url-text">https://tag-oath-board-default-rtdb.asia-southeast1.firebasedatabase.app/messages.json</span>
+                    <button class="copy-btn" onclick="copyToClipboard('https://tag-oath-board-default-rtdb.asia-southeast1.firebasedatabase.app/messages.json')">Copy</button>
+                </div>
                 <p><strong>Method:</strong> POST</p>
-                <p><strong>JSON Body:</strong> {"name": "Your Name", "message": "Your Message", "timestamp": "{{ $now }}"}</p>
+                <p><strong>JSON Body:</strong></p>
+                <div class="json-display">
+                    <div class="json-text">{"name": "Your Name", "message": "Your Message", "timestamp": "{{ $now }}"}</div>
+                    <button class="copy-btn" onclick="copyToClipboard('{\"name\": \"Your Name\", \"message\": \"Your Message\", \"timestamp\": \"{{ $now }}\"}')">Copy</button>
+                </div>
             </div>
-
-            <div class="option">
-                <h4>Option 2: Via URL Parameters (Simple)</h4>
-                <div class="url-display">https://guitarjak.github.io/tag-oath-scroll/?name=YourName&message=YourMessage</div>
-                <p>Just visit this URL with your name and message to post it!</p>
-            </div>
-        </div>
-
-        <div class="test-section">
-            <h3>🧪 Test Message Posting</h3>
-            <p>Test sending a message right now:</p>
-            <div class="test-form">
-                <input type="text" class="test-input" id="testName" placeholder="Your Name" value="Guitar">
-                <input type="text" class="test-input" id="testMessage" placeholder="Your Message" value="I swear I will be an Automatorrrr">
-                <button class="test-btn" onclick="sendTestMessage()">Send Message</button>
-            </div>
-            <div id="testStatus"></div>
         </div>
 
         <div class="messages-container">
             <div class="messages-header">
-                <h2>📜 Recent Messages</h2>
+                <h2>📜 Royal Proclamations</h2>
                 <button class="clear-btn" onclick="loadMessages()">⟲ Refresh</button>
             </div>
             <div id="messagesDisplay">
-                <div class="no-messages">🏰 Loading messages... 🏰</div>
+                <div class="no-messages">🏰 Awaiting royal proclamations from the realm... 🏰</div>
             </div>
         </div>
     </div>
 
     <script>
         const FIREBASE_URL = 'https://tag-oath-board-default-rtdb.asia-southeast1.firebasedatabase.app/messages.json';
+
+        // Copy to clipboard function
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                showNotification('Copied!');
+            }).catch(function() {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showNotification('Copied!');
+            });
+        }
+
+        // Show notification
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 2000);
+        }
 
         // Load messages from Firebase
         async function loadMessages() {
@@ -264,7 +373,7 @@
                 const display = document.getElementById('messagesDisplay');
                 
                 if (!data) {
-                    display.innerHTML = '<div class="no-messages">🏰 No messages yet. Send your first one! 🏰</div>';
+                    display.innerHTML = '<div class="no-messages">🏰 No royal proclamations yet. Send your first message via n8n! 🏰</div>';
                     return;
                 }
                 
@@ -275,7 +384,7 @@
                 })).sort((a, b) => new Date(b.timestamp || 0) - new Date(a.timestamp || 0));
                 
                 if (messages.length === 0) {
-                    display.innerHTML = '<div class="no-messages">🏰 No messages yet. Send your first one! 🏰</div>';
+                    display.innerHTML = '<div class="no-messages">🏰 No royal proclamations yet. Send your first message via n8n! 🏰</div>';
                     return;
                 }
                 
@@ -290,76 +399,7 @@
             } catch (error) {
                 console.error('Error loading messages:', error);
                 document.getElementById('messagesDisplay').innerHTML = 
-                    '<div class="no-messages">⚠️ Error loading messages ⚠️</div>';
-            }
-        }
-
-        // Send test message
-        async function sendTestMessage() {
-            const name = document.getElementById('testName').value;
-            const message = document.getElementById('testMessage').value;
-            const statusDiv = document.getElementById('testStatus');
-            
-            if (!name || !message) {
-                statusDiv.innerHTML = '<div class="status error">Please fill in both name and message!</div>';
-                return;
-            }
-            
-            try {
-                statusDiv.innerHTML = '<div class="status">Sending message...</div>';
-                
-                const response = await fetch(FIREBASE_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        name: name,
-                        message: message,
-                        timestamp: new Date().toISOString()
-                    })
-                });
-                
-                if (response.ok) {
-                    statusDiv.innerHTML = '<div class="status success">✅ Message sent successfully!</div>';
-                    setTimeout(() => {
-                        statusDiv.innerHTML = '';
-                        loadMessages();
-                    }, 2000);
-                } else {
-                    throw new Error('Failed to send message');
-                }
-            } catch (error) {
-                console.error('Error sending message:', error);
-                statusDiv.innerHTML = '<div class="status error">❌ Error sending message. Try again.</div>';
-            }
-        }
-
-        // Check for URL parameters and add message if present
-        function checkUrlParams() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const name = urlParams.get('name');
-            const message = urlParams.get('message');
-            
-            if (name && message) {
-                // Send message to Firebase
-                fetch(FIREBASE_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        name: decodeURIComponent(name),
-                        message: decodeURIComponent(message),
-                        timestamp: new Date().toISOString()
-                    })
-                }).then(() => {
-                    // Remove URL params and reload
-                    window.history.replaceState({}, document.title, window.location.pathname);
-                    setTimeout(loadMessages, 1000);
-                }).catch(error => {
-                    console.error('Error saving URL message:', error);
-                });
+                    '<div class="no-messages">⚠️ Error loading royal proclamations ⚠️</div>';
             }
         }
 
@@ -385,9 +425,6 @@
 
         // Load messages on page load
         loadMessages();
-        
-        // Check URL params on load
-        checkUrlParams();
     </script>
 </body>
 </html>
