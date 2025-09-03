@@ -381,7 +381,12 @@
                 const messages = Object.entries(data).map(([key, value]) => ({
                     id: key,
                     ...value
-                })).sort((a, b) => new Date(b.timestamp || 0) - new Date(a.timestamp || 0));
+                })).sort((a, b) => {
+                    // Sort by timestamp - newest first
+                    const timeA = new Date(a.timestamp || a.created_at || 0).getTime();
+                    const timeB = new Date(b.timestamp || b.created_at || 0).getTime();
+                    return timeB - timeA; // Newest first
+                });
                 
                 if (messages.length === 0) {
                     display.innerHTML = '<div class="no-messages">🏰 No royal proclamations yet. Send your first message via n8n! 🏰</div>';
