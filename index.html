@@ -415,50 +415,23 @@
         }
 
         function formatTimestamp(timestamp) {
-            console.log('formatTimestamp called with:', timestamp, 'Type:', typeof timestamp);
-            
-            if (!timestamp) {
-                console.log('No timestamp provided');
-                return 'Unknown time';
-            }
+            if (!timestamp) return new Date().toLocaleString();
             
             try {
-                // Handle different timestamp formats
-                let date;
-                if (typeof timestamp === 'string') {
-                    console.log('Parsing string timestamp:', timestamp);
-                    date = new Date(timestamp);
-                } else if (typeof timestamp === 'number') {
-                    console.log('Parsing number timestamp:', timestamp);
-                    date = new Date(timestamp);
-                } else {
-                    console.log('Unknown timestamp type:', typeof timestamp);
-                    return 'Unknown time';
-                }
-                
-                console.log('Parsed date object:', date);
-                
-                // Check if date is valid
+                const date = new Date(timestamp);
                 if (isNaN(date.getTime())) {
-                    console.log('Invalid date created from:', timestamp);
-                    return 'Unknown time';
+                    return new Date().toLocaleString();
                 }
                 
-                // Format date nicely
-                const formatted = date.toLocaleString('en-US', {
+                return date.toLocaleString('en-US', {
                     year: 'numeric',
                     month: '2-digit',
                     day: '2-digit',
                     hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit'
+                    minute: '2-digit'
                 });
-                
-                console.log('Formatted timestamp:', formatted);
-                return formatted;
             } catch (error) {
-                console.error('Error formatting timestamp:', error, 'Value:', timestamp);
-                return 'Unknown time';
+                return new Date().toLocaleString();
             }
         }
 
