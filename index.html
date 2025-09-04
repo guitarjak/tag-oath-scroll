@@ -383,8 +383,8 @@
                     ...value
                 })).sort((a, b) => {
                     // Sort by timestamp - newest first
-                    const timeA = new Date(a.timestamp || a.created_at || 0).getTime();
-                    const timeB = new Date(b.timestamp || b.created_at || 0).getTime();
+                    const timeA = new Date(a.time || a.timestamp || a.created_at || 0).getTime();
+                    const timeB = new Date(b.time || b.timestamp || b.created_at || 0).getTime();
                     return timeB - timeA; // Newest first
                 });
                 
@@ -395,7 +395,7 @@
                 
                 display.innerHTML = messages.map(msg => `
                     <div class="message">
-                        <div class="message-time">${formatTimestamp(msg.timestamp)}</div>
+                        <div class="message-time">${formatTimestamp(msg.time || msg.timestamp)}</div>
                         <div class="message-header">⚔️ ${escapeHtml(msg.name || 'Anonymous Knight')}</div>
                         <div class="message-body">"${escapeHtml(msg.message || 'No message')}"</div>
                     </div>
