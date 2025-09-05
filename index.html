@@ -309,8 +309,12 @@
                 <p><strong>Method:</strong> POST</p>
                 <p><strong>JSON Body:</strong></p>
                 <div class="json-display">
-                    <div class="json-text">{"name": "Your Name", "message": "Your Message", "time": "{{ $now }}"}</div>
-                    <button class="copy-btn" onclick="copyToClipboard('{\"name\": \"Your Name\", \"message\": \"Your Message\", \"time\": \"{{ $now }}\"}')">Copy</button>
+                    <div class="json-text">{
+  "name": "Your Name",
+  "message": "Your Message", 
+  "time": "{{ $now }}"
+}</div>
+                    <button class="copy-btn" onclick="copyToClipboard(JSON.stringify({name: 'Your Name', message: 'Your Message', time: '{{ $now }}'}, null, 2))">Copy</button>
                 </div>
             </div>
         </div>
